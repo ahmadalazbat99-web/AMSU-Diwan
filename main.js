@@ -871,10 +871,10 @@ ipcMain.handle(
 
 async function setupAutoUpdater(){
 
-  const c =
-    loadConfig();
-
-  if(!c.updateUrl){
+  if(
+    process.platform !== 'win32' ||
+    !app.isPackaged
+  ){
     return;
   }
 
@@ -882,19 +882,43 @@ async function setupAutoUpdater(){
 
     const {
       autoUpdater
-    } =
-      require('electron-updater');
+    } = require('electron-updater');
 
     autoUpdater.autoDownload = true;
     autoUpdater.autoInstallOnAppQuit = true;
 
     autoUpdater.on(
-      'update-available',
+      'checking-for-update',
       ()=>{
         mainWindow?.webContents.send(
           'update-status',
           {
-            status:'available'
+            status:'checking'
+          }
+        );
+      }
+    );
+
+    autoUpdater.on(
+      'update-available',
+      info=>{
+        mainWindow?.webContents.send(
+          'update-status',
+          {
+            status:'available',
+            version:info.version
+          }
+        );
+      }
+    );
+
+    autoUpdater.on(
+      'update-not-available',
+      ()=>{
+        mainWindow?.webContents.send(
+          'update-status',
+          {
+            status:'not-available'
           }
         );
       }
@@ -907,8 +931,7 @@ async function setupAutoUpdater(){
           'update-status',
           {
             status:'downloading',
-            percent:
-              Math.round(p.percent)
+            percent:Math.round(p.percent)
           }
         );
       }
@@ -916,11 +939,12 @@ async function setupAutoUpdater(){
 
     autoUpdater.on(
       'update-downloaded',
-      ()=>{
+      info=>{
         mainWindow?.webContents.send(
           'update-status',
           {
-            status:'downloaded'
+            status:'downloaded',
+            version:info.version
           }
         );
       }
@@ -929,6 +953,11 @@ async function setupAutoUpdater(){
     autoUpdater.on(
       'error',
       e=>{
+        console.error(
+          'Auto-update error:',
+          e
+        );
+
         mainWindow?.webContents.send(
           'update-status',
           {
@@ -939,18 +968,7 @@ async function setupAutoUpdater(){
       }
     );
 
-    if(
-      process.platform === 'win32' &&
-      app.isPackaged
-    ){
-
-      autoUpdater.setFeedURL({
-        provider:'generic',
-        url:c.updateUrl
-      });
-
-      await autoUpdater.checkForUpdates();
-    }
+    await autoUpdater.checkForUpdates();
 
   } catch(e){
 
@@ -958,6 +976,7 @@ async function setupAutoUpdater(){
       'Auto-update setup error:',
       e
     );
+
   }
 }
 
