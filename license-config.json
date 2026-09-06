@@ -1,0 +1,7 @@
+{
+  "licenseCheckUrl": "https://ikdpqreqlqygpkktblhi.supabase.co/functions/v1/license-check",
+  "publishableKey": "sb_publishable_ev4-JimJX_S3XiuPI7iDrQ_zd3YCfkm",
+  "updateUrl": "",
+  "checkUpdatesOnStartup": true,
+  "heartbeatMinutes": 15
+}

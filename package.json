@@ -1,0 +1,44 @@
+{
+  "name": "amsu-diwan-desktop",
+  "version": "1.3.0",
+  "description": "AMSU Diwan - standalone Windows desktop archive system",
+  "main": "main.js",
+  "author": "AMSU",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "jo.amsu.diwan",
+    "productName": "AMSU Diwan",
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "license-config.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "AMSU-Diwan-Setup-${version}.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AMSU Diwan"
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  }
+}
