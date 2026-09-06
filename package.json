@@ -38,6 +38,13 @@
       "shortcutName": "AMSU Diwan"
     }
   },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "ahmadalazbat99-web",
+      "repo": "AMSU-Diwan"
+    }
+  ],
   "dependencies": {
     "electron-updater": "^6.6.2"
   }
