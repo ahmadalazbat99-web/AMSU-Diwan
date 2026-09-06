@@ -1,6 +1,6 @@
 {
   "name": "amsu-diwan-desktop",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "AMSU Diwan - standalone Windows desktop archive system",
   "main": "main.js",
   "author": "AMSU",
